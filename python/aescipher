@@ -1,0 +1,27 @@
+from Crypto.Cipher import AES
+from Crypto.Hash import SHA256
+key = input("Enter key: ")
+hashobj = SHA256.new(key.encode('utf-8'))
+hashkey = hashobj.digest()
+
+def encrypt(msg):
+  block = 16
+  pad = '{'
+  padding = lambda en: en + ((block - len(en)) % block)* pad
+  cipher = AES.new(hashkey, AES.MODE_ECB)
+  encryptedmsg = cipher.encrypt(padding(msg).encode('utf-8'))
+  return encryptedmsg
+
+def decrypt(info):
+  msg = info
+  pad = '{'
+  decipher = AES.new(hashkey, AES.MODE_ECB)
+  plaintext = decipher.decrypt(msg).decode('utf-8')
+  pad_index = plaintext.find(pad)
+  plaintext = plaintext[:pad_index]
+  return plaintext
+msg = input("Enter message: ")
+cipher_text = encrypt(msg)
+plain_text = decrypt(cipher_text)
+print(cipher_text)
+print(plain_text)
