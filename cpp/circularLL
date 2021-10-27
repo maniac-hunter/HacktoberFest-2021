@@ -1,0 +1,122 @@
+#include <iostream>
+
+using namespace std;
+class node
+{
+public:
+    int data;
+    node*head;
+    node*tail;
+    node*next;
+    node()
+    {
+        head=NULL;
+        tail=NULL;
+        next=NULL;
+    }
+    void inserter(int d);
+    void evendeleter();
+    void oddeleter();
+};
+void node::inserter(int d)
+{
+    node*newnode=new node();
+    newnode->data=d;
+   if(head==NULL)
+   {
+       head=newnode;
+       tail=newnode;
+   }
+   else
+   {
+       tail->next=newnode;
+       newnode->next=NULL;
+       tail=newnode;
+   }
+
+}
+void node::evendeleter()
+{
+    node*temp=head;
+    node*prev;
+    node*Next;
+    int i=0;
+    while(temp!=NULL)
+    {
+        if(i==0)
+        {
+            node* temp1=head;
+            cout<<temp1->data;
+            temp=temp->next;
+            delete(temp1);
+            prev=head;
+            Next=head->next;
+
+        }
+        else if(i%2==0)
+        {
+            prev->next=Next->next;
+            node*temp1=Next;
+            cout<<temp1->data<<" ";
+            delete(temp1);
+            Next=Next->next;
+        }
+        temp=temp->next;
+    }
+}
+void node ::summer(int n)
+{
+    node*temp=head;
+    int sum=0;
+    int p=1;
+    if(n>=5)
+    {
+    do
+    {
+
+        sum=sum+(temp->data) * (temp->data);
+        temp=temp->next;
+
+    }while(temp!=head);
+    cout<<sum<<" ";
+
+    }
+    else
+    {
+        do
+        {
+
+            p=p*temp->data;
+            temp=temp->next;
+        }while(temp!=head);
+        cout<<p<<" ";
+    }
+
+
+}
+int main()
+{
+    char choice;
+    node n;
+    int num;
+
+    do
+    {
+        cin>>choice;
+        if(choice=='Y')
+        {
+            cin>>num;
+            n.inserter(num);
+        }
+        else
+        {
+            break;
+        }
+
+    }while(choice!='N');
+    int i=n.counter();
+    cout<<i<<"\n";
+    n.tail->next=n.head;
+    n.summer(i);
+    return 0;
+}
