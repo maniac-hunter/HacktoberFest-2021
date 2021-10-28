@@ -1,0 +1,36 @@
+def caeser(text,s):
+    result = ""
+ 
+    # traverse text
+    for i in range(len(text)):
+        letter = text[i]
+ 
+        # Encrypt uppercase characters
+        if (letter.isupper()):
+            result += chr((ord(letter) + s-65) % 26 + 65)
+ 
+        # Encrypt lowercase characters
+        elif (letter.islower()):
+            result += chr((ord(letter) + s - 97) % 26 + 97)
+        else:
+          result += letter
+    return result
+ 
+#check the above function
+text = "HELLO I AM CHIRANJIB"
+text1 = "WELCOME TO BENNETT UNIVERSITY"
+text2= "The quick brown fox jumps over the lazy dog"
+s = 6
+s1 = 9
+s2 = 13
+print("Text  : " + text)
+print("Shift : " + str(s))
+print("Cipher: " + caeser(text,s))
+print()
+print("Text  : " + text1)
+print("Shift : " + str(s1))
+print("Cipher: " + caeser(text1,s1))
+print()
+print("Text  : " + text2)
+print("Shift : " + str(s2))
+print("Cipher: " + caeser(text2,s2))
