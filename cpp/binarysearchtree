@@ -1,0 +1,256 @@
+#include <iostream>
+using namespace std;
+class Node
+{
+public:
+    Node*left;
+    Node*right;
+    int data;
+    Node()
+    {
+        left=NULL;
+        right=NULL;
+        data=0;
+    }
+    Node(int d)
+    {
+        data=d;
+    }
+};
+Node* root=NULL;
+Node* inserter(int d)
+{
+    Node*newnode=new Node(d);
+    newnode->right=NULL;
+    newnode->left=NULL;
+    Node*prev=NULL;
+    if(root==NULL)
+    {
+        cout<<"Root Node is Added\n";
+        root=newnode;
+        return root;
+    }
+    else if(root->right==NULL && root->left==NULL)
+    {
+        if(root->data>d)
+        {
+             cout<<"Node Added To Left\n";
+            root->left=newnode;
+
+        }
+        else
+        {
+             cout<<"Node Added To Right\n";
+            root->right=newnode;
+        }
+    }
+    else
+    {
+        Node*temp;
+        if(d>=root->data)
+        {
+            prev=root;
+            temp=root->right;
+        }
+        else
+        {
+            prev=root;
+            temp=root->left;
+        }
+        while(temp!=NULL)
+        {
+            if(d>temp->data)
+            {
+                prev=temp;
+                temp=temp->right;
+            }
+            else
+            {
+                prev=temp;
+                temp=temp->left;
+            }
+
+        }
+        if(d>prev->data)
+        {
+            cout<<"Node Added To Right\n";
+            prev->right=newnode;
+            return newnode;
+        }
+        else
+        {
+            cout<<"Node Added To Left\n";
+            prev->left=newnode;
+            return newnode;
+        }
+    }
+}
+void inorder(Node*root)
+{
+    Node*temp=root;
+    if(temp==NULL)
+        return;
+    inorder(temp->left);
+    cout<<temp->data<<"  ";
+    inorder(temp->right);
+}
+void postorder(Node*root)
+{
+    if(root==NULL)
+        return;
+    postorder(root->left);
+    postorder(root->right);
+    cout<<root->data<<" ";
+}
+void preorder(Node*root)
+{
+    if(root==NULL)
+        return;
+    cout<<root->data<<" ";
+    preorder(root->left);
+    preorder(root->right);
+}
+void deleter(int d)
+{
+    Node*temp=root;
+    Node*prev=NULL;
+    if(d>root->data)
+    {
+        prev=root;
+        temp=temp->right;
+    }
+    else
+    {
+        prev=root;
+        temp=temp->left;
+    }
+    while(temp!=NULL)
+    {
+        if(temp->data=d)
+        {
+
+            break;
+        }
+        else if(temp->data<d)
+        {
+            prev=temp;
+            temp=temp->right;
+        }
+        else
+        {
+            prev=temp;
+            temp=temp->left;
+        }
+    }
+    if(temp==NULL)
+    {
+        cout<<"Element not found";
+    }
+    else
+    {
+        if(temp->right==NULL && temp->left==NULL)
+        {
+            if(prev->right==temp)
+            {
+                prev->right=NULL;
+            }
+            else
+            {
+                prev->left=NULL;
+            }
+            delete(temp);
+        }
+        else if(temp->left==NULL || temp->right==NULL)
+        {
+
+            Node*prevs=temp;
+            if(temp->left==NULL)
+            {
+                while(prevs->right->right!=NULL)
+                {
+                    swap(prevs->data,prevs->right->data);
+                    prevs=prevs->right;
+                }
+                swap(prevs->data,prevs->left->data);
+                Node*curr=prevs->right;
+                prevs->right=NULL;
+                delete(curr);
+            }
+            if(temp->right==NULL)
+            {
+
+                while(prevs->left->left!=NULL)
+                {
+                    swap(prevs->data,prevs->left->data);
+                    prevs=prevs->left;
+                }
+                swap(prevs->data,prevs->left->data);
+                Node*curr=prevs->left;
+                prevs->left=NULL;
+                delete(curr);
+            }
+        }
+        else
+        {
+            Node*previ=temp;
+            previ=previ->right;
+            while(previ->left->left!=NULL)
+            {
+                previ=previ->left;
+            }
+            swap(temp->data,previ->left->data);
+        }
+    }
+}
+int main()
+{
+   Node n1;
+   int choice;
+   int num;
+   cout<<"Enter your choice : ";
+   cin>>choice;
+   cin>>num;
+   root=inserter(num);
+   cout<<"Enter your choice : ";
+   cin>>choice;
+   while(choice!=7)
+   {
+       if(choice==1)
+       {
+           cin>>num;
+           inserter(num);
+       }
+       else if(choice==2)
+       {
+            cin>>num;
+            deleter(num);
+       }
+       else if(choice==3)
+       {
+           cout<<"Inorder Traversal of BST:\n";
+           inorder(root);
+           cout<<"\n";
+       }
+       else if(choice==4)
+       {
+           cout<<"Preorder Traversal of BST:\n";
+           preorder(root);
+           cout<<"\n";
+       }
+       else if(choice==5)
+       {
+           cout<<"Postorder Traversal of BST:\n";
+           postorder(root);
+           cout<<"\n";
+       }
+       else if(choice==6)
+       {
+       }
+       else
+       {
+           break;
+       }
+       cout<<"Enter your choice : ";
+       cin>>choice;
+   }
+}
